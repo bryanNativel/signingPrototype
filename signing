@@ -1,0 +1,92 @@
+<!-- HTML -->
+<div class="row justify-content-center" >
+	<canvas id="canvas" crossorigin></canvas> 
+</div>
+<div class="row justify-content-center" >
+	<button onclick="confirmSign()" type="button" class="btn btn-primary">Valider</button>
+	<button onclick="clearArea()" type="button" class="btn btn-danger">Effacer</button>
+</div>
+
+
+
+<script>
+	const canvas = document.getElementById("canvas");
+	//canvas.style.backgroundImage ="url(https://templates.invoicehome.com/modele-facture-fr-classique-blanc-750px.png)";
+	const ctx = canvas.getContext("2d");
+	let coord = { x: 0, y: 0 };
+
+	document.addEventListener("mousedown", start);
+	document.addEventListener("mouseup", stop);
+	window.addEventListener("resize", resize);
+
+	getMeta("https://www.reseaubat.fr/espace-client/p/60acb94b2e941.png")
+
+	var background = new Image();
+	background.src = "https://www.reseaubat.fr/espace-client/p/60acb94b2e941.png";
+
+	// Make sure the image is loaded first otherwise nothing will draw.
+	background.onload = function(){
+		ctx.drawImage(background,0,0);   
+	}
+
+	function getMeta(url){  
+		var img = new Image();
+		img.onload =  function() {
+			resize(this.height,this.width)
+		};
+		img.src = url;
+	}
+
+	function resize(height,width) {
+	ctx.canvas.width = width;
+	ctx.canvas.height = height;
+	}
+
+	function reposition(event) {
+	coord.x = event.pageX - canvas.offsetLeft;
+	coord.y = event.pageY - canvas.offsetTop;
+	}
+
+	function start(event) {
+		
+	document.addEventListener("mousemove", draw);
+	reposition(event);
+	}
+
+	function stop() {
+	document.removeEventListener("mousemove", draw);
+	}
+
+	function draw(event) {
+	ctx.beginPath();
+	ctx.lineWidth = 3;
+	ctx.lineCap = "round";
+	ctx.strokeStyle = "black";
+	ctx.moveTo(coord.x, coord.y);
+	reposition(event);
+	ctx.lineTo(coord.x, coord.y);
+	ctx.stroke();
+	}
+
+	function clearArea() {
+		// Use the identity matrix while clearing the canvas
+		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	}
+
+	function confirmSign() {
+		let data = canvas.toDataURL('image/png');
+		console.log(data);
+	}
+
+</script>
+
+<style>
+* {
+	cursor:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>✍️</text></svg>") 16 0,auto;
+}
+canvas {
+	background-repeat: no-repeat;
+	background-position: center;
+	margin-top: 5%;
+}
+</style>
