@@ -4,31 +4,30 @@
 </div>
 <div class="row justify-content-center" >
 	<button onclick="confirmSign()" type="button" class="btn btn-primary">Valider</button>
-	<button onclick="clearArea()" type="button" class="btn btn-danger">Effacer</button>
 </div>
 
 
-
+<!--script-->
 <script>
+	
 	const canvas = document.getElementById("canvas");
-	//canvas.style.backgroundImage ="url(https://templates.invoicehome.com/modele-facture-fr-classique-blanc-750px.png)";
 	const ctx = canvas.getContext("2d");
 	let coord = { x: 0, y: 0 };
 
 	document.addEventListener("mousedown", start);
 	document.addEventListener("mouseup", stop);
 	window.addEventListener("resize", resize);
-
-	getMeta("https://www.reseaubat.fr/espace-client/p/60acb94b2e941.png")
-
+	
+	//Draw the background who be our url
+	getMeta("Url")
 	var background = new Image();
-	background.src = "https://www.reseaubat.fr/espace-client/p/60acb94b2e941.png";
+	background.src = "Url";
 
-	// Make sure the image is loaded first otherwise nothing will draw.
 	background.onload = function(){
 		ctx.drawImage(background,0,0);   
 	}
-
+	
+	// for the canvas be the same size of url img we do this
 	function getMeta(url){  
 		var img = new Image();
 		img.onload =  function() {
@@ -36,7 +35,7 @@
 		};
 		img.src = url;
 	}
-
+	
 	function resize(height,width) {
 	ctx.canvas.width = width;
 	ctx.canvas.height = height;
@@ -56,7 +55,7 @@
 	function stop() {
 	document.removeEventListener("mousemove", draw);
 	}
-
+	
 	function draw(event) {
 	ctx.beginPath();
 	ctx.lineWidth = 3;
@@ -66,11 +65,6 @@
 	reposition(event);
 	ctx.lineTo(coord.x, coord.y);
 	ctx.stroke();
-	}
-
-	function clearArea() {
-		// Use the identity matrix while clearing the canvas
-		ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 	}
 
 	function confirmSign() {
